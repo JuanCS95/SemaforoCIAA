@@ -38,6 +38,8 @@
 /*==================[inclusions]=============================================*/
 
 #include "sapi.h"       // <= sAPI header
+#include "semaforo.h"
+#include "controladorSemaforo.h"
 
 /*==================[macros and definitions]=================================*/
 
@@ -61,19 +63,12 @@ int main(void){
    /* Inicializar la placa */
    boardConfig();
 
-   /* ------------- REPETIR POR SIEMPRE ------------- */
-   while(1) {
-
-      /* Prendo el led azul */
-      gpioWrite( LEDB, ON );
-
-      delay(500);
-
-      /* Apago el led azul */
-      gpioWrite( LEDB, OFF );
-
-      delay(500);
-
+   ControladorSemaforo* semaforoc = iniciarControlador();
+   semaforoc->tiempo[0] = 5000;
+   semaforoc->tiempo[1] = 2000;
+   semaforoc->tiempo[2] = 4000;
+   while(1){
+	   secuenciaSemaforo(semaforoc);
    }
 
    /* NO DEBE LLEGAR NUNCA AQUI, debido a que a este programa no es llamado
